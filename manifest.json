@@ -1,0 +1,38 @@
+{
+    "manifest_version": 3,
+    "name": "Tube Notes",
+    "version": "1.0",
+    "version_name": "First complete version",
+    "action": {
+        "default_icon": {
+            "16": "/images/get_started16.png",
+            "32": "/images/get_started32.png",
+            "48": "/images/get_started48.png",
+            "128": "/images/get_started128.png"
+        },
+        "default_title": "Tube Notes",
+        "default_popup": "popup_new.html"
+    },
+    "description": "Create and store notes for YouTube videos.",
+    "icons": {
+        "16": "/images/get_started16.png",
+        "32": "/images/get_started32.png",
+        "48": "/images/get_started48.png",
+        "128": "/images/get_started128.png"
+    },
+    "content_scripts": [
+        {
+          "matches": ["https://www.youtube.com/*"],
+          "js": ["contentScript.js"]
+        }
+    ],
+    "incognito": "spanning",
+    "background": {
+        "service_worker": "background_new.js"
+    },
+    "permissions": [
+        "tabs",
+        "activeTab",
+        "storage",
+        "scripting"]
+}

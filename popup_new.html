@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>YouTube Notes</title>
+        <link rel="stylesheet" href="popup.css">
+        <link rel="stylesheet" href="bootstrap-5.0.1-dist\css\bootstrap.min.css">
+    </head>
+
+    <body>
+        <div id="valid" class="m-1">
+            <h1 id="vidTitle"></h1>
+
+            <div id="notesFound">
+                <table class="table">
+                    <thead>
+                        <tr class="d-flex">
+                            <th class="col-2">Timestamp</th>
+                            <th class="col-6">Note Title</th>
+                            <th class="col-2">Edit</th>
+                            <th class="col-2">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="notesTable_body"></tbody>
+                </table>
+            </div>
+            
+            <div id="notesContent">
+                <h4>Note:<p id="selection"><span id="noSelection">Select a note to see the content.</span></p></h4>
+            </div>
+
+            <div id="noNotes">
+                <h3>Looks like you haven't taken any notes for this video yet. Press the button below to take your first note for this video, or refresh the list to display your existing notes.</h3>
+            </div>
+
+            <div class="py-1">
+                <button class="btn btn-outline-success mx-2" id="add_note">Take a Note</button>
+                <button class="btn btn-outline-secondary mx-2" id="refresh_notes">Refresh Notes List</button>
+            </div>
+        </div>
+
+        <div id="invalid" class="m-1">
+            <h1>Videos with Notes</h1>
+
+            <div id="videosFound">
+                <ol id="videosList_body"></ol>
+            </div>
+
+            <div id="noVideos">
+                <h3>Looks like you haven't taken any notes at all yet! Open up a YouTube video to get started.</h3>
+            </div>
+
+            <div class="py-1">
+                <button class="btn btn-outline-secondary mx-2" id="refresh_videos">Refresh Videos List</button>
+            </div>
+        </div>
+
+        <div id="formDiv" class="m-1">
+            <form id="note_form">
+                <div class="py-1">
+                    <label for="note_title" class="form-label">Note Title:</label>
+                    <input type="text" id="note_title" class="form-control" placeholder="Enter the Title of the Note" name="note_title" required>
+                </div>
+                <div class="py-1">
+                    <label for="note_content">Note:</label><br>
+                    <textarea id="note_content" class="form-control" name="note_content" rows="5" cols="80" placeholder="Enter the contents of the note"></textarea>
+                </div>
+                <div class="py-1">
+                    <button class="btn btn-outline-primary mx-2" type="button" id="save_note">Save Note</button>
+                    <button class="btn btn-outline-info mx-2" type="button" id="save_edit">Save Changes</button>
+                    <button class="btn btn-outline-danger mx-2" type="button" id="cancel_note">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <script src="popup_new.js"></script>
+        <script src="bootstrap-5.0.1-dist\js\bootstrap.min.js"></script>
+
+    </body>
+</html>

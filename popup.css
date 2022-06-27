@@ -1,0 +1,17 @@
+body {
+    min-width: 780px;
+    min-height: 580px;
+    max-width: 100%;
+    overflow: scroll;
+    font-size: 20pt;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#notesFound {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#noSelection {
+    color:darkgrey;
+}
