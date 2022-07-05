@@ -8,6 +8,7 @@ var noNotes = document.getElementById('noNotes');
 var addNotebtn = document.getElementById('add_note');
 var content = document.getElementById('selection');
 var refNotesbtn = document.getElementById('refresh_notes');
+var saveAllNotes = document.getElementById('save_notes');
 
 var invalidTab = document.getElementById('invalid');
 var videosFound = document.getElementById('videosFound');
@@ -24,7 +25,7 @@ var saveEditBtn = document.getElementById('save_edit');
 var cancelNoteBtn = document.getElementById('cancel_note');
 
 const isYTVid = /^https?:\/\/www.youtu\.?be(?:(?:-nocookie)?\.com\/(?:embed\/)|(?:\.com\/watch\?v=))([^#\&\?]+).*/;
-var site, videoID, time, Vtitle; 
+var site, videoID, time; 
 var edit = 0;
 var edit_time, edit_title_old, edit_content_old, del_time, currentTime;
 
@@ -44,6 +45,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             for (let index = 0; index < res_len; index++) {
                 notesTable.innerHTML += "<tr class='d-flex'><td class='col-2 vidTime' data-scroll='"+ get_res[index].videoTime + "'><a class='scrollTime'>" + convert(get_res[index].videoTime) + "</a></td><td class='col-6 noteTitle' data-content='"+ get_res[index].noteContent.replace(/'/g,'&#x27;') + "'>" + get_res[index].noteTitle.replace(/'/g,'&#x27;') + "</td><td class='col-2'><button class='btn btn-outline-warning editBtns' type='button'>Edit Note</button></td><td class='col-2'><button class='btn btn-outline-danger deleteBtns' type='button'>Delete Note</button></td></tr>"
             }
+
+            saveAllNotes.style.display = "inline-block";
 
             // Scroll Video
             document.querySelectorAll(".scrollTime").forEach(function(el) {
@@ -87,15 +90,40 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 });
             });
 
+            // Save Notes Button
+            saveAllNotes.addEventListener('click', function() {
+                var anchor = document.createElement("a");
+                anchor.style = "display: none";
+                // return function () {
+                var data = "";
+                data += "Video ID: " + videoID + "\n";
+
+                for (let i = 0; i < res_len; i++) {
+                    data += "Note Time: " + convert(get_res[i].videoTime) + "\nNote Title: " + get_res[i].noteTitle.replace(/'/g,'&#x27;') + "\nNote Content: " + get_res[i].noteContent.replace(/'/g,'&#x27;') + "\n";
+                }
+                console.log(data);
+
+                var blob = new Blob([data], {type: "text"});
+                var url = window.URL.createObjectURL(blob);
+                anchor.href = url;
+                anchor.download = "save.txt";
+                anchor.click();
+                window.URL.revokeObjectURL(url);
+
+                // };
+            });
+
         // No Notes Found
         } else {
             notesFound.style.display = 'none';
             notesDesc.style.display = 'none';
             noNotes.style.display = 'block';
+            saveAllNotes.style.display = "none";
         }
     // Get Videos
     } else if(request.message === 'getVideos_success') {
         videosList.innerHTML = ""
+        saveAllNotes.style.display = "none";
         var get_vid = request.payload;
         var vid_len = Object.keys(request.payload).length;
         // Videos Found
@@ -204,15 +232,6 @@ function scrollThis() {
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         chrome.tabs.sendMessage(tabs[0].id, {message: scroll_time}, null);
     });
-
-    // chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-    //     chrome.scripting.executeScript({
-    //             target: {tabId: tabs[0].id},
-    //             files: ['scrollVideo.js'],
-    //     }, ()=>{
-    //             chrome.tabs.sendMessage(tabs[0].id,{scrollTo: scroll_time});
-    //     });
-    // }); 
 };
 
 function formDisp() {
